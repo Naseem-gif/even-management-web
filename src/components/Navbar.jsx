@@ -34,7 +34,7 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 w-full z-[100] bg-[#0a0a0a] border-b border-white/5 px-6 py-4">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         
-        {/* LOGO */}
+       
         <Link 
           onClick={() => setIsOpen(false)}
           to={user ? (user.role === "organizer" ? "/organizer" : "/home") : "/"} 
@@ -48,7 +48,7 @@ const Navbar = () => {
           </span>
         </Link>
 
-        {/* DESKTOP NAVIGATION */}
+      
         <div className="hidden md:flex items-center gap-10">
           {user ? (
             <>
@@ -94,7 +94,7 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* MOBILE BURGER */}
+        
         <button 
           onClick={() => setIsOpen(!isOpen)}
           className="md:hidden z-[110] text-white text-3xl outline-none"
@@ -102,7 +102,7 @@ const Navbar = () => {
           {isOpen ? "✕" : "☰"}
         </button>
 
-        {/* MOBILE DRAWER */}
+        
         <div className={`fixed inset-0 bg-[#0a0a0a] z-[105] flex flex-col items-center justify-center gap-12 transition-transform duration-300 md:hidden ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
           
           {user ? (

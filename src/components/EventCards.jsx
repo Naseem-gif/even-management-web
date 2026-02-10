@@ -4,14 +4,14 @@ import { useNavigate } from "react-router-dom";
 const EventCards = ({ event }) => {
   const navigate = useNavigate();
 
-  // Logic: Ensure numbers exist to avoid NaN
+ 
   const booked = event.bookedTickets || 0;
   const total = event.totalTickets || 0;
   const isSoldOut = booked >= total;
   const progress = (booked / (total || 1)) * 100;
 
   const handleClick = () => {
-    // Navigating and passing state like your original logic
+   
     navigate(`/event/${event.id}`, { state: { event } });
   };
 
@@ -24,7 +24,7 @@ const EventCards = ({ event }) => {
       <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 blur-[60px] rounded-full group-hover:bg-indigo-500/20 transition-all"></div>
 
       <div className="relative z-10 flex flex-col h-full">
-        {/* Header */}
+       
         <div className="flex justify-between items-start mb-6">
           <div className="space-y-1">
             <span className="text-[10px] font-black text-indigo-500 uppercase tracking-widest">
@@ -41,7 +41,6 @@ const EventCards = ({ event }) => {
           )}
         </div>
 
-        {/* Info Grid */}
         <div className="space-y-4 mb-8 flex-grow">
           <div className="flex items-center gap-2">
             <div className="w-1.5 h-1.5 rounded-full bg-slate-700"></div>
@@ -58,7 +57,7 @@ const EventCards = ({ event }) => {
               </p>
             </div>
             
-            {/* Visual Progress Bar (Sleeker) */}
+           
             <div className="w-full bg-white/5 h-1 rounded-full overflow-hidden">
               <div 
                 className={`h-full transition-all duration-1000 ease-out ${isSoldOut ? 'bg-red-500/50' : 'bg-indigo-500'}`}
@@ -68,7 +67,6 @@ const EventCards = ({ event }) => {
           </div>
         </div>
 
-        {/* The Action Button - Clean & Sharp */}
         <div 
           className={`w-full py-3 rounded-xl font-black text-[10px] uppercase tracking-[0.2em] text-center transition-all ${
             isSoldOut 

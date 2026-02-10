@@ -17,11 +17,11 @@ const Signup = () => {
     setLoading(true);
 
     try {
-      // 1. Create User in Firebase Auth
+     
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // 2. Store Info in Firestore (Default: Attendee)
+     
       await setDoc(doc(db, "users", user.uid), {
         name,
         email,
@@ -29,10 +29,10 @@ const Signup = () => {
         createdAt: new Date().toISOString(),
       });
 
-      // 🛠️ The Fix: Sign out immediately so Firebase doesn't auto-login
+      
       await signOut(auth);
 
-      // 3. Success Feedback and Redirect
+      
       alert("Account initialized successfully. Please authorize entry via the login gate.");
       navigate("/login");
     } catch (error) {
@@ -45,7 +45,7 @@ const Signup = () => {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center px-6 relative overflow-hidden mt-20">
-      {/* 🧩 Grainy Background Texture */}
+     
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
       <div className="absolute bottom-[-10%] right-[-10%] w-[45%] h-[45%] bg-indigo-500/10 blur-[120px] rounded-full"></div>
 

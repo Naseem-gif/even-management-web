@@ -10,10 +10,10 @@ const EventDetails = () => {
   const user = useSelector((state) => state.auth.user);
   const [loading, setLoading] = useState(false);
 
-  // Catch the event from the navigate state
+  
   const event = state?.event;
 
-  // 🛠️ Check if user already owns a ticket for this specific event
+
   const userHasTicket = event?.attendees?.some((a) => a.uid === user?.uid);
   const isSoldOut = event?.bookedTickets >= event?.totalTickets;
 
@@ -28,13 +28,13 @@ const EventDetails = () => {
   }
 
   const handleBookTicket = async () => {
-    // 1. Organizer Guard
+    
     if (user.role === "organizer") {
       alert("Organizers are restricted from booking tickets. Please use an attendee account.");
       return;
     }
 
-    // 2. Duplicate Booking Guard
+    
     if (userHasTicket) {
       alert("System Conflict: You already hold a valid pass for this broadcast.");
       return;
@@ -45,7 +45,7 @@ const EventDetails = () => {
       const ticketId = `TIX-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
       const eventRef = doc(db, "events", event.id);
 
-      // 3. Update Firestore
+     
       await updateDoc(eventRef, {
         bookedTickets: increment(1),
         attendees: arrayUnion({
@@ -83,7 +83,7 @@ const EventDetails = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
           
-          {/* Left Side: Information Section */}
+          
           <div className="lg:col-span-7">
             <span className="px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-black uppercase tracking-widest rounded-md">
               Broadcast Detail
@@ -108,7 +108,7 @@ const EventDetails = () => {
             </div>
           </div>
 
-          {/* Right Side: The Booking Console */}
+         
           <div className="lg:col-span-5">
             <div className="bg-[#111] border border-white/10 rounded-[3rem] p-10 sticky top-32 shadow-2xl">
               <div className="mb-10">
@@ -119,8 +119,7 @@ const EventDetails = () => {
                   </span>
                   <span className="text-slate-600 font-bold mb-2 uppercase text-xs tracking-widest">Spots Open</span>
                 </div>
-                
-                {/* Visual Capacity Bar */}
+               
                 <div className="h-1.5 w-full bg-white/5 mt-6 rounded-full overflow-hidden">
                   <div 
                     className={`h-full transition-all duration-1000 ${isSoldOut ? 'bg-red-500' : 'bg-indigo-500'}`} 
@@ -129,7 +128,7 @@ const EventDetails = () => {
                 </div>
               </div>
 
-              {/* 🛠️ Dynamic Button States */}
+             
               <button
                 onClick={handleBookTicket}
                 disabled={loading || userHasTicket || isSoldOut}

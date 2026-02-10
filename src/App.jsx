@@ -78,7 +78,7 @@ function App() {
           }
         />
 
-        {/* ✅ THE SHARED PAGE: Accessible by Anyone Logged In */}
+      
         <Route
           path="/home"
           element={
@@ -88,7 +88,7 @@ function App() {
           }
         />
 
-        {/* 🔒 ATTENDEE ONLY: Strict Role Protection */}
+      
         <Route
           path="/my-tickets"
           element={
@@ -106,7 +106,7 @@ function App() {
           }
         />
 
-        {/* 🔒 ORGANIZER ONLY: Strict Role Protection */}
+       
         <Route
           path="/organizer"
           element={
@@ -116,7 +116,7 @@ function App() {
           }
         />
 
-        {/* Catch-all */}
+       
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

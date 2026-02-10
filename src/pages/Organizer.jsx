@@ -62,9 +62,9 @@ const Organizer = () => {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white pb-20 selection:bg-indigo-500/30">
-      {/* 🛠️ The "Bento" Header */}
+     
       <div className="bg-[#111] border-b border-white/5 pt-20 pb-24 px-6 relative overflow-hidden">
-        {/* Grainy texture overlay */}
+        
         <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
         
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-8 relative z-10">

@@ -4,7 +4,7 @@ import { collection, getDocs } from "firebase/firestore";
 
 const Dashboard = () => {
   const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true); // Added loading state
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const fetchEvents = async () => {

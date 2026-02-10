@@ -43,9 +43,9 @@ const LandingPage = () => {
   return (
     <div className="min-h-screen bg-[#F8FAFC] font-sans selection:bg-indigo-100 selection:text-indigo-700">
       
-      {/* --- HERO SECTION --- */}
+     
       <div className="relative overflow-hidden bg-slate-900 pt-24 pb-32 lg:pt-32 lg:pb-48">
-        {/* Abstract Background Decoration */}
+        
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none">
           <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[60%] bg-indigo-600/20 blur-[120px] rounded-full"></div>
           <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[60%] bg-violet-600/10 blur-[120px] rounded-full"></div>
@@ -101,7 +101,7 @@ const LandingPage = () => {
         </div>
       </div>
 
-      {/* --- STATS BAR --- */}
+      
       <div className="max-w-5xl mx-auto px-6 -mt-12 relative z-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-1 bg-white p-2 rounded-[2rem] shadow-2xl shadow-slate-200 border border-slate-100">
           <div className="py-6 text-center border-r border-slate-50">
@@ -147,7 +147,7 @@ const LandingPage = () => {
         )}
       </section>
 
-      {/* --- FOOTER CTA --- */}
+      
       <footer className="bg-white border-t border-slate-100 py-12 text-center">
         <p className="text-slate-400 text-sm">
           © 2026 Eventify Inc. Built for the modern organizer.

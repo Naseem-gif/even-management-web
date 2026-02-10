@@ -10,7 +10,7 @@ const Home = () => {
   const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
-    // Real-time listener: Only active events
+    
     const q = query(collection(db, "events"), where("isActive", "==", true));
     
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -57,7 +57,7 @@ const Home = () => {
         </div>
       </div>
 
-      {/* 📦 Bento Grid Content */}
+     
       <div className="max-w-7xl mx-auto px-6 mt-16 relative z-10">
         <div className="flex items-center justify-between mb-10">
             <div className="flex items-center gap-3">
@@ -70,8 +70,7 @@ const Home = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {events.length > 0 ? (
             events.map((event) => (
-              /* Pass the new dark style props if EventCards handles them, 
-                 otherwise, the container here handles the spacing */
+             
               <div key={event.id} className="transform transition-all hover:-translate-y-1">
                 <EventCards event={event} />
               </div>

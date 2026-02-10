@@ -27,7 +27,7 @@ const AddEvent = () => {
       setDescription("");
       setDate("");
       setTotalTickets("");
-      alert("Event Published! 🚀");
+      alert("Event Published! ");
     } catch (error) {
       console.error("Error adding event:", error);
     } finally {

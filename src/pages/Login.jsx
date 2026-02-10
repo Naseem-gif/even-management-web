@@ -26,7 +26,7 @@ const Login = () => {
         const userData = userSnap.data();
         dispatch(setUser({ uid: userCredential.user.uid, email, ...userData }));
         
-        // Direct routing based on role
+       
         navigate(userData.role === "organizer" ? "/organizer" : "/home");
       }
     } catch (error) {

@@ -12,22 +12,22 @@ const MyTickets = () => {
   useEffect(() => {
     if (!user?.uid) return;
 
-    // 🛠️ THE FIX: Listen to the "events" collection instead of the "user" doc
+   
     const q = query(collection(db, "events"));
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const allEvents = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       
-      // Filter for events where the current user is an attendee
+     
       const userTickets = allEvents
         .filter(event => event.attendees?.some(a => a.uid === user.uid))
         .map(event => {
-          // Extract the specific ticket data for this user
+         
           const myEntry = event.attendees.find(a => a.uid === user.uid);
           return {
             ...event,
             ticketId: myEntry?.ticketId,
-            bookedAt: myEntry?.bookedAt || event.createdAt // Fallback if date is missing
+            bookedAt: myEntry?.bookedAt || event.createdAt 
           };
         });
 
@@ -80,7 +80,7 @@ const MyTickets = () => {
             {tickets.map((ticket) => (
               <div key={ticket.ticketId} className="group flex flex-col items-center">
                 <div className="w-full transform transition-all duration-500 group-hover:-translate-y-2 group-hover:rotate-1">
-                  {/* Your TicketQR component */}
+    
                   <TicketQR 
                     ticketId={ticket.ticketId} 
                     eventTitle={ticket.title} 
