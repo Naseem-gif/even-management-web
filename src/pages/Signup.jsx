@@ -64,7 +64,7 @@ const Signup = () => {
             
             {/* Name Input */}
             <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest ml-1">Legal Name</label>
+              <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest ml-1">Full Name</label>
               <input
                 type="text"
                 placeholder="Naseem Shah"
@@ -76,7 +76,7 @@ const Signup = () => {
 
             {/* Email Input */}
             <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest ml-1">Email Identifier</label>
+              <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest ml-1">Email</label>
               <input
                 type="email"
                 placeholder="name@domain.com"
