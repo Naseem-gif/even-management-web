@@ -52,10 +52,10 @@ const Signup = () => {
       <div className="w-full max-w-[440px] relative z-10 py-10">
         <div className="text-center mb-10">
           <span className="text-indigo-500 text-[10px] font-black uppercase tracking-[0.4em] mb-4 block">
-            New Registry
+           
           </span>
           <h1 className="text-4xl font-black tracking-tighter">
-            Join the <span className="text-slate-500 italic">Network.</span>
+            Sign <span className="text-slate-500 italic">Up</span>
           </h1>
         </div>
 
@@ -104,7 +104,7 @@ const Signup = () => {
               disabled={loading}
               className="w-full mt-4 py-5 bg-white text-black rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-indigo-500 hover:text-white transition-all active:scale-95 shadow-xl shadow-white/5"
             >
-              {loading ? "Registering..." : "Initialize Identity →"}
+              {loading ? "Registering..." : "Create Account →"}
             </button>
           </form>
 
