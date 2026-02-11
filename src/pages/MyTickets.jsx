@@ -24,7 +24,7 @@ const MyTickets = () => {
           return {
             ...event,
             ticketId: myEntry?.ticketId,
-            isValidated: myEntry?.validated || false, // 🛠️ Logic to catch the "Used" status
+            isValidated: myEntry?.validated || false, 
             bookedAt: myEntry?.bookedAt || event.createdAt 
           };
         });
@@ -46,7 +46,7 @@ const MyTickets = () => {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] pb-20 mt-20">
-      {/* Header Section */}
+   
       <div className="bg-[#111] border-b border-white/5 pt-16 pb-24 px-6 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 blur-[100px] rounded-full"></div>
         
@@ -60,7 +60,6 @@ const MyTickets = () => {
         </div>
       </div>
 
-      {/* Tickets Grid */}
       <div className="max-w-7xl mx-auto px-6 -mt-10 relative z-20">
         {tickets.length === 0 ? (
           <div className="text-center py-32 bg-[#111] rounded-[3rem] border border-dashed border-white/10">
@@ -78,7 +77,7 @@ const MyTickets = () => {
             {tickets.map((ticket) => (
               <div key={ticket.ticketId} className="group flex flex-col items-center relative">
                 
-                {/* 🛠️ USED STATUS OVERLAY */}
+
                 {ticket.isValidated && (
                   <div className="absolute inset-0 z-30 bg-black/70 backdrop-blur-[2px] rounded-[2.5rem] flex items-center justify-center border-2 border-red-500/50 transform group-hover:-translate-y-2 group-hover:rotate-1 transition-all duration-500 h-[400px]">
                     <div className="border-4 border-red-500 px-6 py-2 rounded-xl -rotate-12">

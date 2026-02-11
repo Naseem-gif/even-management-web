@@ -63,7 +63,7 @@ const Organizer = () => {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white pb-20 selection:bg-indigo-500/30">
       
-      {/* HEADER SECTION */}
+    
       <div className="bg-[#111] border-b border-white/5 pt-20 pb-24 px-6 relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
         
@@ -76,7 +76,6 @@ const Organizer = () => {
           </div>
 
           <div className="flex flex-wrap gap-4 items-center">
-            {/* 🛠️ NEW SCANNER BUTTON */}
             <button 
               onClick={() => navigate("/scanner")}
               className="group flex items-center gap-3 px-8 py-4 bg-indigo-600 text-white rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-white hover:text-black transition-all shadow-xl shadow-indigo-600/20"
@@ -99,18 +98,16 @@ const Organizer = () => {
         </div>
       </div>
 
-      {/* CONTENT GRID */}
       <div className="max-w-7xl mx-auto px-6 -mt-10 relative z-20">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           
-          {/* LEFT: Add Event Sticky */}
+         
           <div className="lg:col-span-4">
             <div className="sticky top-28 bg-[#111] border border-white/10 rounded-3xl p-2 shadow-2xl">
               <AddEvent />
             </div>
           </div>
 
-          {/* RIGHT: Event & Attendee Management */}
           <div className="lg:col-span-8 space-y-6">
             <div className="flex items-center justify-between mb-4">
                <h2 className="text-sm font-black uppercase tracking-[0.2em] text-slate-500">Event Management</h2>

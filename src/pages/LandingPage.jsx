@@ -16,7 +16,7 @@ const LandingPage = () => {
     const eventsRef = collection(db, "events");
     const q = query(eventsRef, where("isActive", "==", true));
 
-    // Real-time listener for "live" ticket counts and new events
+  
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const eventsData = snapshot.docs.map((doc) => ({
         id: doc.id,

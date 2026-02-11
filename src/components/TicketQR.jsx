@@ -4,7 +4,7 @@ import { QRCodeCanvas } from "qrcode.react";
 const TicketQR = ({ ticketId, eventTitle, userName }) => {
   return (
     <div className="relative max-w-sm mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
-      {/* Decorative Ticket "Cuts" */}
+     
       <div className="absolute top-1/2 -left-3 w-6 h-6 bg-gray-100 rounded-full shadow-inner"></div>
       <div className="absolute top-1/2 -right-3 w-6 h-6 bg-gray-100 rounded-full shadow-inner"></div>
 

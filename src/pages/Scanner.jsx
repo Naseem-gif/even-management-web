@@ -9,10 +9,10 @@ const Scanner = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const navigate = useNavigate();
   const scannerRef = useRef(null);
-  const memoizedId = "reader"; // Keep ID consistent
+  const memoizedId = "reader"; 
 
   useEffect(() => {
-    // Only start if the element exists and we haven't started yet
+  
     if (!scannerRef.current) {
       scannerRef.current = new Html5Qrcode(memoizedId);
     }
@@ -31,7 +31,7 @@ const Scanner = () => {
       }
     };
 
-    // Small delay to ensure React has painted the 'reader' div
+  
     const timer = setTimeout(startCamera, 500);
 
     return () => {
