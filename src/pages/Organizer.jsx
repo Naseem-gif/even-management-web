@@ -74,9 +74,6 @@ const Organizer = () => {
                 Admin Console
               </span> 
             </div>
-            <h1 className="text-5xl font-black tracking-tighter">
-              The <span className="italic text-indigo-500">Hub.</span>
-            </h1>
           </div>
 
           <div className="flex gap-3">
@@ -94,20 +91,19 @@ const Organizer = () => {
         </div>
       </div>
 
-      {/* Main Grid Area */}
+      
       <div className="max-w-7xl mx-auto px-6 -mt-10 relative z-20">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Left: Add Event Form */}
+         
           <div className="lg:col-span-4">
             <div className="sticky top-28 bg-[#111] border border-white/10 rounded-3xl p-2 shadow-2xl">
               <AddEvent />
             </div>
           </div>
 
-          {/* Right: Event List */}
           <div className="lg:col-span-8 space-y-6">
             <div className="flex items-center justify-between mb-4">
-               <h2 className="text-sm font-black uppercase tracking-[0.2em] text-slate-500">Management Queue</h2>
+               <h2 className="text-sm font-black uppercase tracking-[0.2em] text-slate-500">Attendee List</h2>
                <div className="h-px flex-1 bg-white/5 ml-4"></div>
             </div>
 

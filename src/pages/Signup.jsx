@@ -62,7 +62,7 @@ const Signup = () => {
         <div className="bg-[#111] border border-white/10 rounded-[2.5rem] p-10 shadow-2xl">
           <form onSubmit={handleSignup} className="space-y-6">
             
-            {/* Name Input */}
+           
             <div className="space-y-2">
               <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest ml-1">Full Name</label>
               <input
@@ -74,7 +74,7 @@ const Signup = () => {
               />
             </div>
 
-            {/* Email Input */}
+           
             <div className="space-y-2">
               <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest ml-1">Email</label>
               <input
@@ -86,7 +86,7 @@ const Signup = () => {
               />
             </div>
 
-            {/* Password Input */}
+          
             <div className="space-y-2">
               <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest ml-1">Secure Passkey</label>
               <input
@@ -98,7 +98,7 @@ const Signup = () => {
               />
             </div>
 
-            {/* Submit Button */}
+           
             <button
               type="submit"
               disabled={loading}
@@ -116,12 +116,6 @@ const Signup = () => {
               </Link>
             </p>
           </div>
-        </div>
-
-        {/* System Status Footer */}
-        <div className="mt-10 flex items-center justify-center gap-2 opacity-30">
-            <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
-            <p className="text-[8px] font-black uppercase tracking-widest text-slate-400">Security Gate Active</p>
         </div>
       </div>
     </div>

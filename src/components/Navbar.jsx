@@ -44,7 +44,7 @@ const Navbar = () => {
             E
           </div>
           <span className="text-xl font-black text-white tracking-tighter italic uppercase">
-            EVENTIFY
+            EVENT MANAGEMENT
           </span>
         </Link>
 

@@ -20,7 +20,7 @@ const EventCards = ({ event }) => {
       onClick={handleClick}
       className="group relative bg-[#111] border border-white/10 rounded-[2rem] p-7 cursor-pointer transition-all hover:border-indigo-500/50 hover:bg-[#161616] flex flex-col h-full overflow-hidden"
     >
-      {/* 🔮 Top Glow Effect */}
+      
       <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 blur-[60px] rounded-full group-hover:bg-indigo-500/20 transition-all"></div>
 
       <div className="relative z-10 flex flex-col h-full">

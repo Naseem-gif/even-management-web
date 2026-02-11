@@ -70,7 +70,6 @@ const EventDetails = () => {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white mt-20 pt-12 pb-20 px-6 relative">
-      {/* Texture Overlay */}
       <div className="fixed inset-0 opacity-[0.02] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
 
       <div className="max-w-6xl mx-auto relative z-10">

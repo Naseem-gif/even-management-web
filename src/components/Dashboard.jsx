@@ -54,7 +54,7 @@ const Dashboard = () => {
                 </div>
                 <div className="bg-blue-50 px-4 py-2 rounded-lg text-center">
                   <p className="text-xs font-bold text-blue-400 uppercase">Booked</p>
-                  {/* Matches your schema: bookedTickets and totalTickets */}
+                  
                   <p className="text-lg font-black text-blue-700">
                     {event.bookedTickets || 0} / {event.totalTickets}
                   </p>
@@ -66,7 +66,7 @@ const Dashboard = () => {
                   <span className="text-xl">👥</span> Attendee List
                 </h3>
                 
-                {/* Check for 'attendees' (the array we used in EventDetails) */}
+              
                 {event.attendees && event.attendees.length > 0 ? (
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {event.attendees.map((attendee) => (
