@@ -144,7 +144,7 @@ const LandingPage = () => {
       
       <footer className="bg-white border-t border-slate-100 py-12 text-center">
         <p className="text-slate-400 text-sm">
-          © 2026 Eventify Inc. Built for the modern organizer.
+          © 2026 Eventify Inc. Built by M. Naseem.
         </p>
       </footer>
     </div>

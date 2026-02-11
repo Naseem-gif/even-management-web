@@ -79,7 +79,6 @@ const Scanner = () => {
     } catch (e) {
       setStatus("Error connecting to DB");
     } finally {
-      // Wait 3 seconds so Naseem can see the result, then allow next scan
       setTimeout(() => {
         setIsProcessing(false);
         if (status.includes("SUCCESSFUL") || status.includes("INVALID") || status.includes("USED")) {
@@ -102,7 +101,6 @@ const Scanner = () => {
           </div>
         </div>
 
-        {/* This ID must match memoizedId */}
         <div 
           id={memoizedId} 
           className="relative overflow-hidden rounded-3xl border border-white/5 bg-black aspect-square mb-8 shadow-inner"
