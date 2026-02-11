@@ -1,35 +1,58 @@
-import React, { useEffect, useState } from "react";
-import { Html5QrcodeScanner } from "html5-qrcode";
+import React, { useEffect, useState, useRef } from "react";
+import { Html5Qrcode } from "html5-qrcode";
 import { db } from "../config/firebase/firebaseconfig";
 import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 const Scanner = () => {
+  const [status, setStatus] = useState("Accessing Camera...");
   const [scanResult, setScanResult] = useState(null);
-  const [status, setStatus] = useState("Initializing Camera...");
+  const scannerRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const scanner = new Html5QrcodeScanner("reader", {
-      fps: 10,
-      qrbox: { width: 250, height: 250 },
-    });
+    // 1. Initialize instance immediately
+    scannerRef.current = new Html5Qrcode("reader");
 
-    scanner.render(onScanSuccess, onScanFailure);
+    const startScanner = async () => {
+      try {
+        // 2. Request camera with specific constraints for faster lock-on
+        await scannerRef.current.start(
+          { facingMode: "environment" }, // Forces back camera immediately
+          {
+            fps: 20, // Higher FPS for snappier detection
+            qrbox: { width: 250, height: 250 },
+          },
+          onScanSuccess
+        );
+        setStatus("Ready to Scan");
+      } catch (err) {
+        setStatus("Camera Error: Check Permissions");
+        console.error(err);
+      }
+    };
 
-    async function onScanSuccess(decodedText) {
-      scanner.clear(); // Stop scanning once we find a code
-      setScanResult(decodedText);
-      setStatus("Verifying Ticket...");
-      validateTicket(decodedText);
-    }
+    startScanner();
 
-    function onScanFailure(err) {
-      // Logic for continuous scanning attempts
-    }
-
-    return () => scanner.clear();
+    // Cleanup: Stop camera immediately when leaving page
+    return () => {
+      if (scannerRef.current && scannerRef.current.isScanning) {
+        scannerRef.current.stop().catch(console.error);
+      }
+    };
   }, []);
+
+  async function onScanSuccess(decodedText) {
+    // Play a haptic feedback if supported
+    if (navigator.vibrate) navigator.vibrate(100);
+    
+    setScanResult(decodedText);
+    setStatus("Verifying...");
+    
+    // Stop scanner to save resources while processing
+    await scannerRef.current.stop();
+    validateTicket(decodedText);
+  }
 
   const validateTicket = async (ticketId) => {
     try {
@@ -39,67 +62,54 @@ const Scanner = () => {
       for (const eventDoc of querySnapshot.docs) {
         const eventData = eventDoc.data();
         const attendees = eventData.attendees || [];
-        
-        const attendeeIndex = attendees.findIndex(a => a.ticketId === ticketId);
+        const index = attendees.findIndex(a => a.ticketId === ticketId);
 
-        if (attendeeIndex !== -1) {
+        if (index !== -1) {
           found = true;
-          const attendee = attendees[attendeeIndex];
-
-          if (attendee.validated) {
+          if (attendees[index].validated) {
             setStatus("❌ ALREADY USED");
-            return;
+          } else {
+            const updated = [...attendees];
+            updated[index].validated = true;
+            await updateDoc(doc(db, "events", eventDoc.id), { attendees: updated });
+            setStatus("✅ CHECK-IN SUCCESSFUL");
           }
-
-          // Update the specific attendee in the array
-          const updatedAttendees = [...attendees];
-          updatedAttendees[attendeeIndex].validated = true;
-
-          await updateDoc(doc(db, "events", eventDoc.id), {
-            attendees: updatedAttendees
-          });
-
-          setStatus("✅ CHECK-IN SUCCESSFUL");
           break;
         }
       }
-
-      if (!found) setStatus("⚠️ TICKET NOT FOUND");
-    } catch (error) {
-      console.error(error);
-      setStatus("Error processing ticket.");
+      if (!found) setStatus("⚠️ INVALID TICKET");
+    } catch (e) {
+      setStatus("Error.");
     }
   };
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center p-6">
       <div className="max-w-md w-full bg-[#111] border border-white/10 rounded-[3rem] p-8 text-center shadow-2xl">
-        <h1 className="text-xl font-black text-white uppercase tracking-widest mb-6">Security Check</h1>
+        <div className="mb-6">
+          <h1 className="text-white font-black uppercase tracking-widest text-sm">Scanner Pro</h1>
+          <p className={`text-[10px] mt-2 font-bold uppercase tracking-widest ${
+            status.includes("✅") ? "text-green-500" : status.includes("❌") ? "text-red-500" : "text-indigo-400"
+          }`}>{status}</p>
+        </div>
         
-        <div id="reader" className="overflow-hidden rounded-2xl border border-white/5 mb-6"></div>
-
-        <div className={`py-4 rounded-xl font-black uppercase text-xs tracking-widest ${
-          status.includes("SUCCESS") ? "bg-green-500/20 text-green-500" : 
-          status.includes("ALREADY") || status.includes("NOT FOUND") ? "bg-red-500/20 text-red-500" : 
-          "bg-white/5 text-slate-400"
-        }`}>
-          {status}
+        {/* The Video Feed Container */}
+        <div id="reader" className="relative overflow-hidden rounded-2xl border-2 border-indigo-500/20 bg-black aspect-square">
+            {/* Minimalist Scanner Overlay */}
+            {!scanResult && <div className="absolute inset-0 border-2 border-indigo-500/50 animate-pulse pointer-events-none z-10 rounded-2xl"></div>}
         </div>
 
         {scanResult && (
           <button 
             onClick={() => window.location.reload()} 
-            className="mt-8 w-full py-4 bg-white text-black rounded-2xl font-black uppercase text-[10px] tracking-widest"
+            className="mt-8 w-full py-4 bg-white text-black rounded-2xl font-black uppercase text-[10px] tracking-widest shadow-xl"
           >
-            Scan Next →
+            Scan Next
           </button>
         )}
-
-        <button 
-          onClick={() => navigate("/organizer")}
-          className="mt-4 text-[10px] font-black text-slate-600 uppercase tracking-widest hover:text-white"
-        >
-          Back to Dashboard
+        
+        <button onClick={() => navigate("/organizer")} className="mt-6 text-[10px] font-black text-slate-600 uppercase tracking-widest hover:text-white transition-colors">
+          Exit Scanner
         </button>
       </div>
     </div>
