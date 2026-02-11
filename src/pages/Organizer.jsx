@@ -62,48 +62,58 @@ const Organizer = () => {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white pb-20 selection:bg-indigo-500/30">
-     
+      
+      {/* HEADER SECTION */}
       <div className="bg-[#111] border-b border-white/5 pt-20 pb-24 px-6 relative overflow-hidden">
-        
         <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
         
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-8 relative z-10">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-8 relative z-10">
           <div>
-            <div className="flex items-center gap-4 mb-4">
-              <span className="px-3 py-1 rounded-md bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-black uppercase tracking-widest">
-                Admin Console
-              </span> 
-            </div>
+            <span className="px-3 py-1 rounded-md bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-black uppercase tracking-widest mb-4 inline-block">
+              Admin Console
+            </span>
+            <h1 className="text-4xl font-black tracking-tighter uppercase italic">Control Panel</h1>
           </div>
 
-          <div className="flex gap-3">
-            <div className="bg-white/[0.03] border border-white/10 p-5 rounded-2xl min-w-[160px]">
-              <p className="text-slate-500 text-[10px] font-black uppercase tracking-tighter mb-1">Active Events</p>
-              <p className="text-3xl font-black">{events.length}</p>
+          <div className="flex flex-wrap gap-4 items-center">
+            {/* 🛠️ NEW SCANNER BUTTON */}
+            <button 
+              onClick={() => navigate("/scanner")}
+              className="group flex items-center gap-3 px-8 py-4 bg-indigo-600 text-white rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-white hover:text-black transition-all shadow-xl shadow-indigo-600/20"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="12"></line><line x1="8" y1="12" x2="12" y2="12"></line><line x1="12" y1="12" x2="16" y2="12"></line><line x1="12" y1="12" x2="12" y2="16"></line><line x1="7" y1="7" x2="7" y2="7"></line><line x1="17" y1="7" x2="17" y2="7"></line><line x1="17" y1="17" x2="17" y2="17"></line><line x1="7" y1="17" x2="7" y2="17"></line></svg>
+              Launch Entry Scanner
+            </button>
+
+            <div className="bg-white/[0.03] border border-white/10 p-4 rounded-2xl min-w-[120px]">
+              <p className="text-slate-500 text-[8px] font-black uppercase tracking-tighter mb-1">Live Events</p>
+              <p className="text-xl font-black">{events.length}</p>
             </div>
-            <div className="bg-white/[0.03] border border-white/10 p-5 rounded-2xl min-w-[160px]">
-              <p className="text-slate-500 text-[10px] font-black uppercase tracking-tighter mb-1">Total Revenue</p>
-              <p className="text-3xl font-black text-indigo-500">
-                {events.reduce((acc, curr) => acc + (curr.bookedTickets || 0), 0)} <span className="text-sm text-slate-500 font-normal">Tix</span>
+            <div className="bg-white/[0.03] border border-white/10 p-4 rounded-2xl min-w-[120px]">
+              <p className="text-slate-500 text-[8px] font-black uppercase tracking-tighter mb-1">Tickets Sold</p>
+              <p className="text-xl font-black text-indigo-500">
+                {events.reduce((acc, curr) => acc + (curr.bookedTickets || 0), 0)}
               </p>
             </div>
           </div>
         </div>
       </div>
 
-      
+      {/* CONTENT GRID */}
       <div className="max-w-7xl mx-auto px-6 -mt-10 relative z-20">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-         
+          
+          {/* LEFT: Add Event Sticky */}
           <div className="lg:col-span-4">
             <div className="sticky top-28 bg-[#111] border border-white/10 rounded-3xl p-2 shadow-2xl">
               <AddEvent />
             </div>
           </div>
 
+          {/* RIGHT: Event & Attendee Management */}
           <div className="lg:col-span-8 space-y-6">
             <div className="flex items-center justify-between mb-4">
-               <h2 className="text-sm font-black uppercase tracking-[0.2em] text-slate-500">Attendee List</h2>
+               <h2 className="text-sm font-black uppercase tracking-[0.2em] text-slate-500">Event Management</h2>
                <div className="h-px flex-1 bg-white/5 ml-4"></div>
             </div>
 
@@ -143,17 +153,26 @@ const Organizer = () => {
                       {event.attendees.map((attendee) => (
                         <div
                           key={attendee.ticketId}
-                          className="flex items-center justify-between p-4 bg-white/[0.02] border border-white/5 rounded-2xl hover:bg-white/[0.05] transition-all"
+                          className={`flex items-center justify-between p-4 border rounded-2xl transition-all ${
+                            attendee.validated 
+                            ? "bg-green-500/5 border-green-500/20" 
+                            : "bg-white/[0.02] border-white/5 hover:bg-white/[0.05]"
+                          }`}
                         >
                           <div>
-                            <p className="font-bold text-sm text-slate-200">{attendee.name}</p>
-                            <p className="text-[10px] font-mono text-slate-500 uppercase">{attendee.ticketId.substring(0, 8)}</p>
+                            <p className={`font-bold text-sm ${attendee.validated ? "text-green-400" : "text-slate-200"}`}>
+                              {attendee.name}
+                            </p>
+                            <p className="text-[10px] font-mono text-slate-500 uppercase">
+                              {attendee.ticketId.substring(0, 8)}
+                            </p>
                           </div>
 
                           {attendee.validated ? (
-                            <span className="text-[10px] font-black text-green-500 uppercase tracking-widest flex items-center gap-1">
-                              Verified ✓
-                            </span>
+                            <div className="flex flex-col items-end">
+                              <span className="text-[8px] font-black text-green-500 uppercase tracking-widest">Checked In</span>
+                              <span className="text-lg">✓</span>
+                            </div>
                           ) : (
                             <button
                               onClick={() => handleValidateTicket(event.id, attendee.ticketId)}

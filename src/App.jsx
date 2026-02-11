@@ -13,6 +13,7 @@ import MyTickets from "./pages/MyTickets";
 import EventDetails from "./pages/EventDetails";
 import Organizer from "./pages/Organizer";
 import LandingPage from "./pages/LandingPage";
+import Scanner from "./pages/Scanner"; // 🛠️ Import the new Scanner page
 import Navbar from "./components/Navbar";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 
@@ -78,7 +79,7 @@ function App() {
           }
         />
 
-      
+        {/* Attendee Routes */}
         <Route
           path="/home"
           element={
@@ -87,8 +88,6 @@ function App() {
             </ProtectedRoutes>
           }
         />
-
-      
         <Route
           path="/my-tickets"
           element={
@@ -106,7 +105,7 @@ function App() {
           }
         />
 
-       
+        {/* Organizer Routes */}
         <Route
           path="/organizer"
           element={
@@ -115,8 +114,18 @@ function App() {
             </ProtectedRoutes>
           }
         />
+        
+        {/* 🛠️ New Scanner Route (Organizer Only) */}
+        <Route
+          path="/scanner"
+          element={
+            <ProtectedRoutes role="organizer">
+              <Scanner />
+            </ProtectedRoutes>
+          }
+        />
 
-       
+        {/* Fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

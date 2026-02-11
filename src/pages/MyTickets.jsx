@@ -12,21 +12,19 @@ const MyTickets = () => {
   useEffect(() => {
     if (!user?.uid) return;
 
-   
     const q = query(collection(db, "events"));
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const allEvents = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       
-     
       const userTickets = allEvents
         .filter(event => event.attendees?.some(a => a.uid === user.uid))
         .map(event => {
-         
           const myEntry = event.attendees.find(a => a.uid === user.uid);
           return {
             ...event,
             ticketId: myEntry?.ticketId,
+            isValidated: myEntry?.validated || false, // 🛠️ Logic to catch the "Used" status
             bookedAt: myEntry?.bookedAt || event.createdAt 
           };
         });
@@ -57,7 +55,7 @@ const MyTickets = () => {
             Digital Vault
           </span>
           <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight leading-none">
-            Your Access <span className="text-slate-500 italic">Passes.</span>
+            Your  <span className="text-slate-500 italic">Tickets.</span>
           </h1>
         </div>
       </div>
@@ -78,9 +76,18 @@ const MyTickets = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             {tickets.map((ticket) => (
-              <div key={ticket.ticketId} className="group flex flex-col items-center">
-                <div className="w-full transform transition-all duration-500 group-hover:-translate-y-2 group-hover:rotate-1">
-    
+              <div key={ticket.ticketId} className="group flex flex-col items-center relative">
+                
+                {/* 🛠️ USED STATUS OVERLAY */}
+                {ticket.isValidated && (
+                  <div className="absolute inset-0 z-30 bg-black/70 backdrop-blur-[2px] rounded-[2.5rem] flex items-center justify-center border-2 border-red-500/50 transform group-hover:-translate-y-2 group-hover:rotate-1 transition-all duration-500 h-[400px]">
+                    <div className="border-4 border-red-500 px-6 py-2 rounded-xl -rotate-12">
+                      <span className="text-red-500 font-black text-4xl tracking-tighter uppercase">USED</span>
+                    </div>
+                  </div>
+                )}
+
+                <div className={`w-full transform transition-all duration-500 group-hover:-translate-y-2 group-hover:rotate-1 ${ticket.isValidated ? 'opacity-30 grayscale pointer-events-none' : ''}`}>
                   <TicketQR 
                     ticketId={ticket.ticketId} 
                     eventTitle={ticket.title} 
@@ -90,14 +97,16 @@ const MyTickets = () => {
                 
                 <div className="mt-6 flex flex-col items-center gap-2">
                    <div className="flex items-center gap-3">
-                     <button 
-                        onClick={() => window.print()}
-                        className="text-[10px] font-black text-slate-500 hover:text-white uppercase tracking-tighter transition-colors px-4 py-2 bg-white/5 border border-white/10 rounded-full"
-                      >
-                        Download PDF
-                      </button>
-                      <span className="text-[10px] font-bold text-slate-600 uppercase tracking-tighter">
-                         REF: {ticket.ticketId}
+                     {!ticket.isValidated && (
+                       <button 
+                         onClick={() => window.print()}
+                         className="text-[10px] font-black text-slate-500 hover:text-white uppercase tracking-tighter transition-colors px-4 py-2 bg-white/5 border border-white/10 rounded-full"
+                       >
+                         Download PDF
+                       </button>
+                     )}
+                      <span className={`text-[10px] font-bold uppercase tracking-tighter ${ticket.isValidated ? 'text-red-500' : 'text-slate-600'}`}>
+                         {ticket.isValidated ? "ENTRY CONFIRMED" : `REF: ${ticket.ticketId}`}
                       </span>
                    </div>
                 </div>
