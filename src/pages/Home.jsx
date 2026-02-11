@@ -35,10 +35,10 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white pb-20 selection:bg-indigo-500/30">
-      {/* 🧩 Grainy Texture Overlay */}
+      
       <div className="fixed inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
 
-      {/* ⚡ Structural Header Section */}
+     
       <div className="pt-24 pb-16 px-6 relative z-10 border-b border-white/5 bg-[#111]/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
@@ -62,7 +62,7 @@ const Home = () => {
         <div className="flex items-center justify-between mb-10">
             <div className="flex items-center gap-3">
                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-               <h2 className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">Available Broadasts</h2>
+               <h2 className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">Available Events</h2>
             </div>
             <p className="text-[10px] font-bold text-slate-600 uppercase">{events.length} Events Total</p>
         </div>
