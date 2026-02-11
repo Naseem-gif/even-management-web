@@ -5,52 +5,51 @@ import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 const Scanner = () => {
-  const [status, setStatus] = useState("Accessing Camera...");
+  const [status, setStatus] = useState("Initializing...");
   const [isProcessing, setIsProcessing] = useState(false);
-  const scannerRef = useRef(null);
   const navigate = useNavigate();
+  const scannerRef = useRef(null);
+  const memoizedId = "reader"; // Keep ID consistent
 
   useEffect(() => {
-    scannerRef.current = new Html5Qrcode("reader");
+    // Only start if the element exists and we haven't started yet
+    if (!scannerRef.current) {
+      scannerRef.current = new Html5Qrcode(memoizedId);
+    }
 
-    const startScanner = async () => {
+    const startCamera = async () => {
       try {
         await scannerRef.current.start(
           { facingMode: "environment" },
-          { fps: 20, qrbox: { width: 250, height: 250 } },
+          { fps: 15, qrbox: { width: 250, height: 250 } },
           onScanSuccess
         );
         setStatus("Ready to Scan");
       } catch (err) {
-        setStatus("Camera Error: Check Permissions");
-        console.error(err);
+        console.error("Scanner start error:", err);
+        setStatus("Camera Access Denied");
       }
     };
 
-    startScanner();
+    // Small delay to ensure React has painted the 'reader' div
+    const timer = setTimeout(startCamera, 500);
 
-    // Cleanup: Make sure camera is killed when leaving the page
     return () => {
+      clearTimeout(timer);
       if (scannerRef.current && scannerRef.current.isScanning) {
-        scannerRef.current.stop().catch((e) => console.log("Stop error:", e));
+        scannerRef.current.stop()
+          .then(() => { scannerRef.current.clear(); })
+          .catch(e => console.log("Cleanup error", e));
       }
     };
   }, []);
 
   const onScanSuccess = async (decodedText) => {
-    if (isProcessing) return; // Prevent double scans
+    if (isProcessing) return;
     setIsProcessing(true);
     
-    if (navigator.vibrate) navigator.vibrate(100);
-    setStatus("Verifying Ticket...");
-
-    // 🛠️ IMPORTANT: Stop scanning but DON'T kill the component yet
-    try {
-      await scannerRef.current.pause(true); // Pause is safer than stop() mid-process
-      await validateTicket(decodedText);
-    } catch (err) {
-      console.error(err);
-    }
+    setStatus("Validating...");
+    await validateTicket(decodedText);
   };
 
   const validateTicket = async (ticketId) => {
@@ -71,52 +70,55 @@ const Scanner = () => {
             const updated = [...attendees];
             updated[index].validated = true;
             await updateDoc(doc(db, "events", eventDoc.id), { attendees: updated });
-            setStatus("✅ CHECK-IN SUCCESSFUL");
+            setStatus("✅ SUCCESSFUL");
           }
           break;
         }
       }
       if (!found) setStatus("⚠️ INVALID TICKET");
     } catch (e) {
-      setStatus("Error.");
+      setStatus("Error connecting to DB");
     } finally {
-        // Keep the result on screen for 2 seconds so they can see it, then reset
-        setTimeout(() => {
-            setIsProcessing(false);
-            if (scannerRef.current) scannerRef.current.resume();
-            setStatus("Ready to Scan");
-        }, 2000);
+      // Wait 3 seconds so Naseem can see the result, then allow next scan
+      setTimeout(() => {
+        setIsProcessing(false);
+        if (status.includes("SUCCESSFUL") || status.includes("INVALID") || status.includes("USED")) {
+           setStatus("Ready to Scan");
+        }
+      }, 3000);
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center p-6">
-      <div className="max-w-md w-full bg-[#111] border border-white/10 rounded-[3rem] p-8 text-center shadow-2xl">
-        <div className="mb-6">
-          <h1 className="text-white font-black uppercase tracking-widest text-sm">Entry Scanner</h1>
-          <div className={`mt-4 py-3 rounded-xl font-black uppercase text-[10px] tracking-[0.2em] transition-all ${
-            status.includes("✅") ? "bg-green-500 text-black" : 
-            status.includes("❌") || status.includes("INVALID") ? "bg-red-500 text-white" : 
-            "bg-indigo-600/10 text-indigo-400"
+    <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center p-6 text-white">
+      <div className="w-full max-w-md bg-[#111] border border-white/10 rounded-[2.5rem] p-8 shadow-2xl">
+        
+        <div className="text-center mb-8">
+          <h2 className="text-xs font-black tracking-[0.3em] uppercase text-indigo-500 mb-2">Gate Security</h2>
+          <div className={`text-lg font-black italic uppercase transition-all ${
+            status.includes("✅") ? "text-green-500" : status.includes("❌") ? "text-red-500" : "text-white"
           }`}>
             {status}
           </div>
         </div>
-        
-        <div id="reader" className="relative overflow-hidden rounded-2xl border-2 border-white/5 bg-black aspect-square mb-6">
-            {/* Visual Scanner Guide */}
-            {!isProcessing && (
-                <div className="absolute inset-0 z-10 pointer-events-none border-[40px] border-black/50">
-                    <div className="w-full h-full border-2 border-indigo-500 animate-pulse"></div>
-                </div>
-            )}
+
+        {/* This ID must match memoizedId */}
+        <div 
+          id={memoizedId} 
+          className="relative overflow-hidden rounded-3xl border border-white/5 bg-black aspect-square mb-8 shadow-inner"
+        >
+          {isProcessing && (
+            <div className="absolute inset-0 z-20 bg-black/40 backdrop-blur-sm flex items-center justify-center">
+              <div className="animate-ping w-12 h-12 rounded-full bg-indigo-500 opacity-75"></div>
+            </div>
+          )}
         </div>
 
         <button 
-          onClick={() => navigate("/organizer")} 
-          className="w-full py-4 bg-white/5 border border-white/10 text-slate-400 rounded-2xl font-black uppercase text-[10px] tracking-widest hover:text-white transition-all"
+          onClick={() => navigate("/organizer")}
+          className="w-full py-4 bg-white/5 border border-white/10 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all"
         >
-          Close Scanner
+          Back to Dashboard
         </button>
       </div>
     </div>
